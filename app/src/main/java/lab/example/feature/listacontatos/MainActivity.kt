@@ -21,7 +21,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        geraListaDeContatos()
         setupToolBar(toolBar, "Lista de contatos",false)
         setupListView()
         setupOnClicks()
@@ -34,19 +33,11 @@ class MainActivity : BaseActivity() {
 
     private fun setupListView(){
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = ContatoAdapter(this,ContatoSingleton.lista) {onClickItemRecyclerView(it)}
-        recyclerView.adapter = adapter
-    }
-
-    private fun geraListaDeContatos(){
-        ContatoSingleton.lista.add(ContatosVO(1,"Fulano", "(00) 9900-0001"))
-        ContatoSingleton.lista.add(ContatosVO(2,"Ciclano", "(00) 9900-0002"))
-        ContatoSingleton.lista.add(ContatosVO(3,"Vinicius", "(00) 9900-0001"))
     }
 
     override fun onResume() {
         super.onResume()
-        adapter?.notifyDataSetChanged()
+        onClickBuscar()
     }
 
     private fun onClickAdd(){

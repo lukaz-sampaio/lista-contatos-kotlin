@@ -9,6 +9,7 @@ import lab.example.listadecontatos.feature.listacontatos.model.ContatosVO
 import lab.example.listadecontatos.singleton.ContatoSingleton
 import kotlinx.android.synthetic.main.activity_contato.*
 import kotlinx.android.synthetic.main.activity_contato.toolBar
+import lab.example.application.ContatoApplication
 
 class ContatoActivity : BaseActivity() {
 
@@ -41,9 +42,9 @@ class ContatoActivity : BaseActivity() {
             telefone
         )
         if(index == -1) {
-            ContatoSingleton.lista.add(contato)
+            ContatoApplication.instance.helperDB?.salvarContato(contato)
         }else{
-            ContatoSingleton.lista.set(index,contato)
+//            ContatoSingleton.lista.set(index,contato)
         }
         finish()
     }
