@@ -19,8 +19,19 @@ class ContatoApplication : Application() {
     var helperDB: HelperDB? = null
         private set
 
+    /**
+     * 'companion object' é o 'static' do java. Nesse caso, o 'companion object'
+     * foi criado para fazer um singleton de 'ContatoApplication' (sem precisar
+     * mudar o modificador de 'class' para 'object').
+     */
+    companion object {
+        var instance: ContatoApplication = ContatoApplication()
+    }
+
     override fun onCreate() {
         super.onCreate()
+
+        instance = this
 
         /**
          * O helper está sendo instanciado aqui para criar/atualizar o banco de

@@ -3,7 +3,7 @@ package lab.example.helpers
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import lab.example.application.ContatoApplication
+import lab.example.listadecontatos.feature.listacontatos.model.ContatosVO
 
 /**
  * A minha classe `Helper` extende `SQLiteHelper` pra ajudar na manipulação do
@@ -44,5 +44,21 @@ class HelperDB(
             database?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         }
         onCreate(database)
+    }
+
+    fun buscarContatos(busca: String): List<ContatosVO> {
+        val db = readableDatabase ?: return mutableListOf()
+        var lista = mutableListOf<ContatosVO>()
+        val sql = "SELECT id, nome, telefone FROM $TABLE_NAME"
+        var cursor = db.rawQuery(sql, null) ?: return mutableListOf()
+        while (cursor.moveToNext()) {
+            val contato = ContatosVO(
+                cursor.getInt(cursor.getColumnIndex("id")),
+                cursor.getString(cursor.getColumnIndex("nome")),
+                cursor.getString(cursor.getColumnIndex("telefone"))
+            )
+            lista.add(contato)
+        }
+        return lista
     }
 }

@@ -4,13 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
+import lab.example.application.ContatoApplication
 import lab.example.listadecontatos.R
 import lab.example.listadecontatos.bases.BaseActivity
 import lab.example.listadecontatos.feature.contato.ContatoActivity
 import lab.example.listadecontatos.feature.listacontatos.adapter.ContatoAdapter
 import lab.example.listadecontatos.feature.listacontatos.model.ContatosVO
 import lab.example.listadecontatos.singleton.ContatoSingleton
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity() {
@@ -61,18 +62,19 @@ class MainActivity : BaseActivity() {
 
     private fun onClickBuscar(){
         val busca = etBuscar.text.toString()
-        var listaFiltrada: List<ContatosVO> = ContatoSingleton.lista
-        if(!busca.isNullOrEmpty()){
-            listaFiltrada = ContatoSingleton.lista.filter { contato ->
-                if (contato.nome.toLowerCase().contains(busca.toLowerCase())){
-                    return@filter true
-                }
-                return@filter false
-            }
+        var listaFiltrada: List<ContatosVO> = mutableListOf()
+
+        try {
+            listaFiltrada =
+                ContatoApplication.instance.helperDB?.buscarContatos(busca)
+                    ?: mutableListOf()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
-        adapter = ContatoAdapter(this,listaFiltrada) {onClickItemRecyclerView(it)}
+
+        adapter = ContatoAdapter(this, listaFiltrada) { onClickItemRecyclerView(it) }
         recyclerView.adapter = adapter
-        Toast.makeText(this,"Buscando por $busca",Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Buscando por $busca", Toast.LENGTH_SHORT).show()
     }
 
 }
