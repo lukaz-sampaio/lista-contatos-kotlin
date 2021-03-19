@@ -53,7 +53,7 @@ class ContatoActivity : BaseActivity() {
 
     fun onClickExcluirContato(view: View) {
         if(index > -1){
-            ContatoSingleton.lista.removeAt(index)
+            ContatoApplication.instance.helperDB?.deletarContato(index)
             finish()
         }
     }

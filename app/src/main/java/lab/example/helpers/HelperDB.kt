@@ -87,4 +87,11 @@ class HelperDB(
         db.execSQL(sql, parameters)
         db.close()
     }
+
+    fun deletarContato(id: Int) {
+        val db = writableDatabase ?: return
+        val sql = "DELETE FROM $TABLE_NAME WHERE id = ?"
+        db.execSQL(sql, arrayOf("$id"))
+        db.close()
+    }
 }
