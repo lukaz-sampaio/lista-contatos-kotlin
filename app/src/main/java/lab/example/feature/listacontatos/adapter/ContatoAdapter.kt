@@ -29,7 +29,6 @@ class ContatoAdapter(
             llItem.setOnClickListener { onClick(contato.id) }
         }
     }
-
 }
 
 class ContatoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

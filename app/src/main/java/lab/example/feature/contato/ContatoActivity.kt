@@ -7,7 +7,6 @@ import lab.example.application.ContatoApplication
 import lab.example.listadecontatos.R
 import lab.example.listadecontatos.bases.BaseActivity
 import lab.example.listadecontatos.feature.listacontatos.model.ContatosVO
-import lab.example.listadecontatos.singleton.ContatoSingleton
 
 class ContatoActivity : BaseActivity() {
 
@@ -16,26 +15,34 @@ class ContatoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contato)
-        setupToolBar(toolBar, "Contato",true)
+        setupToolBar(toolBar, "Contato", true)
         setupContato()
         btnSalvarConato.setOnClickListener { onClickSalvarContato() }
     }
 
-    private fun setupContato(){
-        index = intent.getIntExtra("index",-1)
-        if (index == -1){
+    private fun setupContato() {
+        index = intent.getIntExtra("index", -1)
+        if (index == -1) {
             btnExcluirContato.visibility = View.GONE
             return
         }
 
-        var lista = ContatoApplication.instance.helperDB?.buscarContatos("$index", true) ?: return
-        var contato = lista.getOrNull(0) ?: return
+        progress.visibility = View.VISIBLE
+        Thread(Runnable {
+            Thread.sleep(500)
+            var lista = ContatoApplication.instance.helperDB?.buscarContatos("$index", true)
+                ?: return@Runnable
+            var contato = lista.getOrNull(0) ?: return@Runnable
 
-        etNome.setText(contato.nome)
-        etTelefone.setText(contato.telefone)
+            runOnUiThread {
+                etNome.setText(contato.nome)
+                etTelefone.setText(contato.telefone)
+                progress.visibility = View.GONE
+            }
+        }).start()
     }
 
-    private fun onClickSalvarContato(){
+    private fun onClickSalvarContato() {
         val nome = etNome.text.toString()
         val telefone = etTelefone.text.toString()
         val contato = ContatosVO(
@@ -43,18 +50,35 @@ class ContatoActivity : BaseActivity() {
             nome,
             telefone
         )
-        if(index == -1) {
-            ContatoApplication.instance.helperDB?.salvarContato(contato)
-        }else{
-            ContatoApplication.instance.helperDB?.atualizarContato(contato)
-        }
-        finish()
+
+        progress.visibility = View.VISIBLE
+        Thread(Runnable {
+            Thread.sleep(500)
+            if (index == -1) {
+                ContatoApplication.instance.helperDB?.salvarContato(contato)
+            } else {
+                ContatoApplication.instance.helperDB?.atualizarContato(contato)
+            }
+
+            runOnUiThread {
+                progress.visibility = View.GONE
+                finish()
+            }
+        }).start()
     }
 
     fun onClickExcluirContato(view: View) {
-        if(index > -1){
-            ContatoApplication.instance.helperDB?.deletarContato(index)
-            finish()
+        if (index > -1) {
+
+            progress.visibility = View.VISIBLE
+            Thread(Runnable {
+                Thread.sleep(500)
+                ContatoApplication.instance.helperDB?.deletarContato(index)
+                runOnUiThread {
+                    progress.visibility = View.GONE
+                    finish()
+                }
+            }).start()
         }
     }
 }
