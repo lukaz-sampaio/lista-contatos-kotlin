@@ -1,5 +1,6 @@
 package lab.example.helpers
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -92,6 +93,41 @@ class HelperDB(
         val db = writableDatabase ?: return
         val sql = "DELETE FROM $TABLE_NAME WHERE id = ?"
         db.execSQL(sql, arrayOf("$id"))
+        db.close()
+    }
+
+    fun atualizarContato(contato: ContatosVO) {
+
+        /**
+         * Há duas formas de executar uma query.
+         * 1: escrevendo a instrução manualmente e passando para o
+         *  "db.execSQL("sql", arrayOf(string_params))";
+         *
+         * 2. deixando o SQLiteHelper auxiliar usando os métodos prontos.
+         *  Exemplo: db.update(nome_tabela, parametros do tipo
+         *  "ContentValues()", where, parametros_where).
+         *
+         *  Abaixo tem as duas formas de como fazer. Lembrando que cada tipo de
+         *  query tem o seu tipo no SQLiteOpenHelper (db.[insert, update,
+         *  select, delete]).
+         */
+
+
+//        val db = writableDatabase ?: return
+//        val sql = "UPDATE $TABLE_NAME SET nome = ?, telefone = ? WHERE id = ?"
+//        val params = arrayOf(contato.nome, contato.telefone, contato.id)
+//        db.execSQL(sql, params)
+//        db.close()
+
+        val db = writableDatabase ?: return
+        val params = ContentValues()
+        params.put("nome", contato.nome)
+        params.put("telefone", contato.telefone)
+
+        val where = "id = ?"
+        val whereParams = arrayOf("${contato.id}")
+
+        db.update("$TABLE_NAME", params, where, whereParams)
         db.close()
     }
 }
