@@ -21,7 +21,7 @@ class HelperDB(
      */
     companion object {
         private val NOME_BANCO: String = "contatos.db"
-        private val VERSAO_BANCO: Int = 1
+        private val VERSAO_BANCO: Int = 2
     }
 
     val TABLE_NAME = "contato"
@@ -33,7 +33,8 @@ class HelperDB(
                 id INTEGER NOT NULL,
                 nome TEXT NOT NULL,
                 telefone TEXT NOT NULL,
-                
+                imagem TEXT,
+
                 PRIMARY KEY (id AUTOINCREMENT) 
             );
         """.trimIndent()
@@ -61,7 +62,7 @@ class HelperDB(
             params = arrayOf("%$busca%", "%$busca%")
         }
 
-        val sql = "SELECT id, nome, telefone FROM $TABLE_NAME $where"
+        val sql = "SELECT id, nome, telefone, imagem FROM $TABLE_NAME $where"
         var cursor = db.rawQuery(sql, params)
 
         if (cursor == null) {
@@ -73,7 +74,8 @@ class HelperDB(
             val contato = ContatosVO(
                 cursor.getInt(cursor.getColumnIndex("id")),
                 cursor.getString(cursor.getColumnIndex("nome")),
-                cursor.getString(cursor.getColumnIndex("telefone"))
+                cursor.getString(cursor.getColumnIndex("telefone")),
+                cursor.getString(cursor.getColumnIndex("imagem"))
             )
             lista.add(contato)
         }
@@ -83,8 +85,8 @@ class HelperDB(
 
     fun salvarContato(contato: ContatosVO) {
         val db = writableDatabase ?: return
-        val sql = "INSERT INTO $TABLE_NAME (nome, telefone) VALUES (?, ?)"
-        val parameters = arrayOf(contato.nome, contato.telefone)
+        val sql = "INSERT INTO $TABLE_NAME (nome, telefone, imagem) VALUES (?, ?, ?)"
+        val parameters = arrayOf(contato.nome, contato.telefone, contato.imagem)
         db.execSQL(sql, parameters)
         db.close()
     }
@@ -123,6 +125,7 @@ class HelperDB(
         val params = ContentValues()
         params.put("nome", contato.nome)
         params.put("telefone", contato.telefone)
+        params.put("imagem", contato.imagem)
 
         val where = "id = ?"
         val whereParams = arrayOf("${contato.id}")

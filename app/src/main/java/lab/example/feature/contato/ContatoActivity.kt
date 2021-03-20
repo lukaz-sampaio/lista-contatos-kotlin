@@ -48,7 +48,8 @@ class ContatoActivity : BaseActivity() {
         val contato = ContatosVO(
             index,
             nome,
-            telefone
+            telefone,
+            ""
         )
 
         progress.visibility = View.VISIBLE

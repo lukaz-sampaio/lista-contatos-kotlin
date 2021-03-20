@@ -26,6 +26,7 @@ class ContatoAdapter(
         with(holder.itemView){
             tvNome.text = contato.nome
             tvTelefone.text = contato.telefone
+//            ivImagem.text = contato.imagem
             llItem.setOnClickListener { onClick(contato.id) }
         }
     }
