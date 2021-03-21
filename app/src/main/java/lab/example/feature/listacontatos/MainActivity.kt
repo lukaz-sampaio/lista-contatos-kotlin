@@ -2,6 +2,9 @@ package lab.example.listadecontatos.feature.listacontatos
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -87,5 +90,21 @@ class MainActivity : BaseActivity() {
                 Toast.makeText(this, "Buscando por $busca", Toast.LENGTH_SHORT).show()
             }
         }).start()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.item_about -> {
+                Toast.makeText(this, "Menu \"About\" selected!", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
