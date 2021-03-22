@@ -68,7 +68,7 @@ class ContatoActivity : BaseActivity() {
         }).start()
     }
 
-    fun onClickExcluirContato(view: View) {
+    fun onClickExcluirContato() {
         if (index > -1) {
 
             progress.visibility = View.VISIBLE

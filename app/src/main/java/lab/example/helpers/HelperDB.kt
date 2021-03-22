@@ -52,8 +52,8 @@ class HelperDB(
         val db = readableDatabase ?: return mutableListOf()
         var lista = mutableListOf<ContatosVO>()
 
-        var where: String? = null
-        var params: Array<String>? = null
+        var where: String
+        var params: Array<String>
         if (buscaPorId) {
             where = " WHERE id = ? "
             params = arrayOf(busca)
