@@ -7,6 +7,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import lab.example.application.ContatoApplication
@@ -16,15 +19,15 @@ import lab.example.listadecontatos.feature.contato.ContatoActivity
 import lab.example.listadecontatos.feature.listacontatos.adapter.ContatoAdapter
 import lab.example.listadecontatos.feature.listacontatos.model.ContatosVO
 
-
 class MainActivity : BaseActivity() {
 
     private var adapter:ContatoAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.nav_drawer)
         setupToolBar(toolBar, "Lista de contatos",false)
+        setupDrawer()
         setupListView()
         setupOnClicks()
     }
@@ -106,5 +109,17 @@ class MainActivity : BaseActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setupDrawer() {
+        val drawerLayout = findViewById<View>(R.id.nav_drawer_layout) as DrawerLayout
+        val toolbar = findViewById<Toolbar>(R.id.toolBar)
+
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar,
+            R.string.open_drawer, R.string.close_drawer
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
     }
 }
