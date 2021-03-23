@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ListaDeContatos</string>
+    <string name="menu_item_about">About</string>
+
+    <string name="open_drawer">Abrir</string>
+    <string name="close_drawer">Fechar</string>
 </resources>

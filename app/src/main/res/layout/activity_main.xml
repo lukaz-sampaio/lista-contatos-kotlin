@@ -50,6 +50,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <!--
+            Para poder ter um RecyclerView (uma lista melhorada, já que ele não
+            destrói o item, ele aproveita e reconstrói o item com outros dados
+            ao rolar a tela) é preciso ter uma classe que implementa a interface
+            "RecyclerView.Adaptar<T>" passando para o tipo do Adapter uma
+            ViewHolder. Exemplo: classe ContatoAdapter.kt
+            -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"

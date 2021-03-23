@@ -14,18 +14,23 @@ class ContatoAdapter(
     private val lista: List<ContatosVO>,
     private val onClick: ((Int) -> Unit)
 ) : RecyclerView.Adapter<ContatoViewHolder>() {
+
+    // Cria a RecycleView na tela
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContatoViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_contato,parent,false)
         return ContatoViewHolder(view)
     }
 
+    // Conta a quantidade de items.
     override fun getItemCount(): Int = lista.size
 
+    // popula a RecyclerView com os dados
     override fun onBindViewHolder(holder: ContatoViewHolder, position: Int) {
         val contato = lista[position]
         with(holder.itemView){
             tvNome.text = contato.nome
             tvTelefone.text = contato.telefone
+//            ivImagem.text = contato.imagem
             llItem.setOnClickListener { onClick(contato.id) }
         }
     }
